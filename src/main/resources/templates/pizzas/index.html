@@ -17,7 +17,7 @@
   <tr th:each="pizza : ${pizzaIndex}">
     <td th:text="${pizza.name}"></td>
     <td th:text="${pizza.description}"></td>
-    <td th:text="${pizza.image}"></td>
+    <td><img id="pizza" alt="pizza-image" th:src="@{/} + ${pizza.image}" /></td>
     <td th:text="${pizza.price}"></td>
   </tr>
   </tbody>
