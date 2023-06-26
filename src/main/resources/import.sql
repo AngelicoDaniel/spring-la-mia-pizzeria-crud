@@ -1,4 +1,4 @@
-INSERT INTO pizzas (name, description, image, price) VALUES ('Margherita', 'Classic pizza with tomato sauce, mozzarella, and basil', 'margherita.jpg', 9.99);
+INSERT INTO pizzas (name, description, image, price) VALUES ('Margherita', 'Classic pizza with tomato sauce, mozzarella, and basil', 'margherita.jpg', 3.99);
 
 INSERT INTO pizzas (name, description, image, price) VALUES ('Diavola', 'Spicy pizza with tomato sauce, mozzarella, and spicy salami', 'diavola.jpg', 10.99);
 
@@ -13,3 +13,5 @@ INSERT INTO pizzas (name, description, image, price) VALUES ('Capricciosa', 'Piz
 INSERT INTO pizzas (name, description, image, price) VALUES ('Bufalina', 'Pizza with tomato sauce, buffalo mozzarella, and fresh basil', 'bufalina.jpg', 11.99);
 
 INSERT INTO pizzas (name, description, image, price) VALUES ('Prosciutto e Funghi', 'Pizza with tomato sauce, mozzarella, ham, and mushrooms', 'prosciutto_funghi.jpg', 10.99);
+
+INSERT INTO pizzas (name, description, image, price) VALUES ('Pizza Melanzana', 'Pizza with yellow tomato sauce, donkey milk mozzarella, smoked herring, silphium and cumin', 'pizza_melanzana.jpg', 869.51);
