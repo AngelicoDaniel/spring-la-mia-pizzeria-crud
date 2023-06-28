@@ -62,7 +62,17 @@ public class PizzaController {
         return "redirect:/pizzas";
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        Optional<Pizza> result = pizzaRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "pizza with id " + id + " not found");
+        } else {
+            model.addAttribute("pizza", result.get());
+        }
+        return "/pizzas/edit";
 
-
-
+    }
 }
+
+
