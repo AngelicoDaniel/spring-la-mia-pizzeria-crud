@@ -1,6 +1,8 @@
 package org.lessons.springpizzeria.controller;
 
 import jakarta.validation.Valid;
+import org.lessons.springpizzeria.messages.AlertMessage;
+import org.lessons.springpizzeria.messages.AlertMessageType;
 import org.lessons.springpizzeria.model.Pizza;
 import org.lessons.springpizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +49,7 @@ public class PizzaController {
     }
 
     @GetMapping("/create")
-    public String showCreateForm(Model model) {
+    public String create(Model model) {
         model.addAttribute("pizza", new Pizza());
         return "pizzas/create";
     }
@@ -64,15 +67,46 @@ public class PizzaController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
+        Pizza pizza = getPizzaById(id);
+        model.addAttribute("pizza", pizza);
+        return "/pizzas/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String doEdit(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("pizza") Pizza formPizza,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        Pizza pizzaToEdit = getPizzaById(id);
+        if (bindingResult.hasErrors()) {
+            return "/pizzas/edit";
+        }
+
+        formPizza.setId(pizzaToEdit.getId());
+        pizzaRepository.save(formPizza);
+        redirectAttributes.addFlashAttribute("message",
+                new AlertMessage(AlertMessageType.SUCCESS, "Pizza updated!"));
+        return "redirect:/pizzas";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        Pizza pizzaToDelete = getPizzaById(id);
+        pizzaRepository.delete(pizzaToDelete);
+        redirectAttributes.addFlashAttribute("message",
+                new AlertMessage(AlertMessageType.SUCCESS, "Pizza  " + pizzaToDelete.getName() + " deleted!"));
+        return "redirect:/pizzas";
+    }
+
+
+    // Utility methods
+    private Pizza getPizzaById(Integer id) {
         Optional<Pizza> result = pizzaRepository.findById(id);
         if (result.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "pizza with id " + id + " not found");
-        } else {
-            model.addAttribute("pizza", result.get());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with id " + id + " not found");
         }
-        return "/pizzas/edit";
-
+        return result.get();
     }
 }
-
-
